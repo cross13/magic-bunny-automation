@@ -1,9 +1,13 @@
 /// <reference types="Cypress" />
 
-context('Authenticate into the app', () => {
+context('Login Page', () => {
     beforeEach(() => {
         cy.visit('/');
     })
+
+    it('should have the correct title', () => {
+        cy.get('.Login-Title').should('have.text', 'Magic App').should('be.visible');
+    });
 
     it('Should render the correct login page', () => {
         cy.get('.Login-Title').should('have.text', 'Magic App').should('be.visible');
@@ -23,7 +27,7 @@ context('Authenticate into the app', () => {
         });
     });
 
-    it('should show the error msg on a failed login', () => {
+    it('should show the error msg on a failed login with the correct style', () => {
         cy.get('.Login-username').type('fail-user');
         cy.get('.Login-password').type('fail-password');
         cy.get('.Login-submit').click();
@@ -33,9 +37,33 @@ context('Authenticate into the app', () => {
     });
 
     it('should login', () => {
+        cy.server().route('POST', '/login').as('postLogin');
+
+        cy.clearLocalStorage().then((ls) => {
+            expect(ls.getItem('myUser')).to.be.null
+        });
         cy.get('.Login-username').type('admin');
         cy.get('.Login-password').type('123456');
         cy.get('.Login-submit').click();
+        cy.wait('@postLogin').its('status').should('be', 200);
+        cy.url().should('include', '/magic').then(() => {
+            expect(localStorage.getItem('myUser')).not.empty;
+            cy.log(localStorage.getItem('myUser'));
+        });
+        
     });
+
+
+    it('should authenticate with the api', () => {
+        cy.fixture('login').then((user) => {
+            cy.request('POST', Cypress.env('API_URL') + '/login', user)
+            .then((xhr) => {
+                expect(xhr.body).not.empty;
+                expect(xhr.body.token).not.empty;
+                localStorage.setItem('myUser', xhr.body);
+                
+            })
+        });
+    })
 
 });

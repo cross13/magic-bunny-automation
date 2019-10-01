@@ -18,10 +18,10 @@ describe('Magic Act', () => {
             .click()
             .click()
             .click();
-        cy.get('[data-cy=bunny-house]').children().each((bunny) => {
-            debugger;
-            cy.log(bunny);
-        });
+        // cy.get('[data-cy=bunny-house]').children().each((bunny) => {
+        //     debugger;
+        //     cy.log(bunny);
+        // });
         bunnyCount('[data-cy=bunny-house]').then((qty) => {
             cy.log('Bunnies:' + qty);
             expect(qty).to.be.eq(3);

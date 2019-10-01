@@ -16,13 +16,13 @@ describe('Stub Network Response', () => {
 
     it('will stub the network login response', () => {
         cy.fixture('stub-token.json').as('userTokenJSON')
-        cy.server();
+        cy.server({delay: 2000});
         cy.route('POST', Cypress.env('API_URL') + '/login', '@userTokenJSON')
             .as('postLogin');
         cy.get('.Login-username').type('admin');
         cy.get('.Login-password').type('123456');
         cy.get('.Login-submit').click();
-        cy.wait('@postLogin').its('status').should('be', 200);
+        cy.wait('@postLogin', {timeout: 5000}).its('status').should('be', 200);
         cy.url().should('include', '/magic').then(() => {
             expect(localStorage.getItem('myUser')).not.empty;
             cy.log(localStorage.getItem('myUser'));

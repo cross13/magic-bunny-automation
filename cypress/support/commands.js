@@ -23,3 +23,23 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (username, password) => {
+  cy.server().route('POST', '/login').as('postLogin');
+
+  cy.clearLocalStorage().then((ls) => {
+  	expect(ls.getItem('myUser')).to.be.null
+  });
+  
+  cy.get('.Login-username').type(username);
+  cy.get('.Login-password').type(password);
+  cy.get('.Login-submit').click();
+  
+  cy.wait('@postLogin').its('status').should('be', 200);
+  
+  cy.url().should('include', '/magic').then(() => {
+    expect(localStorage.getItem('myUser')).not.empty;
+    cy.log(localStorage.getItem('myUser'));
+  });
+  
+})

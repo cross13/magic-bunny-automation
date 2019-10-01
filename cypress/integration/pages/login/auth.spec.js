@@ -53,7 +53,6 @@ context('Login Page', () => {
         
     });
 
-
     it('should authenticate with the api', () => {
         cy.fixture('login').then((user) => {
             cy.request('POST', Cypress.env('API_URL') + '/login', user)
@@ -64,6 +63,6 @@ context('Login Page', () => {
                 
             })
         });
-    })
+    });
 
 });

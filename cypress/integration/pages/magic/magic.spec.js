@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+import bunnyCount from './bunny-counter';
+
 describe('Magic Act', () => {
 
     beforeEach(() => {
@@ -19,6 +21,10 @@ describe('Magic Act', () => {
         cy.get('[data-cy=bunny-house]').children().each((bunny) => {
             debugger;
             cy.log(bunny);
+        });
+        bunnyCount('[data-cy=bunny-house]').then((qty) => {
+            cy.log('Bunnies:' + qty);
+            expect(qty).to.be.eq(3);
         });
     })
 

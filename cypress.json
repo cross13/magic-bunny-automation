@@ -3,11 +3,11 @@
   "requestTimeout": 7000,
   "pageLoadTimeout": 60000,
   "defaultCommandTimeout": 5000,
-  "trashAssetsBeforeRuns": true,
   "viewportHeight": 960,
   "viewportWidth": 1360,
   "env": {
     "API_URL": "http://localhost:8080"
   },
-  "projectId": "7odipd"
+  "projectId": "7odipd",
+  "trashAssetsBeforeRuns": true
 }

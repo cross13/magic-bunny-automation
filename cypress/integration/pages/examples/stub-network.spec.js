@@ -16,7 +16,7 @@ describe('Stub Network Response', () => {
 
     it('will stub the network login response', () => {
         cy.fixture('stub-token.json').as('userTokenJSON')
-        cy.server({delay: 2000});
+        cy.server({delay: 3000});
         cy.route('POST', Cypress.env('API_URL') + '/login', '@userTokenJSON')
             .as('postLogin');
         cy.get('.Login-username').type('admin');
